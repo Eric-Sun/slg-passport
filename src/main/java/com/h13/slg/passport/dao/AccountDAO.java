@@ -49,4 +49,13 @@ public class AccountDAO {
         return holder.getKey().intValue();
     }
 
+    public boolean haveThisName(String name) {
+        String sql = "select count(1) from account where name=?";
+        int cnt = j.queryForObject(sql, new Object[]{name}, Integer.class);
+        if (cnt == 0)
+            return false;
+        else
+            return true;
+
+    }
 }

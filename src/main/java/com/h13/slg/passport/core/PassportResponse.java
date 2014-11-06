@@ -1,18 +1,32 @@
 package com.h13.slg.passport.core;
 
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
 
 import java.util.Map;
 
 /**
- * Created by sunbo on 14-10-24.
+ * Created by sunbo on 14-11-4.
  */
 public class PassportResponse {
-    private int code;
-    private Map<String, Object> data;
 
-    public PassportResponse(int code) {
+    private Map<String, Object> data = Maps.newHashMap();
+    private int code = ResponseCode.SUCCESS;
+
+    private PassportResponse() {
+    }
+
+    private PassportResponse(int code) {
         this.code = code;
+    }
+
+    public static PassportResponse newSuccessResponse() {
+        return new PassportResponse();
+    }
+
+    public static PassportResponse newFailureResponse(int code) {
+        return new PassportResponse(code);
+
     }
 
     public PassportResponse addData(String key, Object value) {
@@ -20,15 +34,25 @@ public class PassportResponse {
         return this;
     }
 
-    public static PassportResponse newSuccessResponse() {
-        return new PassportResponse(ResponseCode.SUCCESS);
+
+    public Map<String, Object> getData() {
+        return data;
     }
 
-    public static PassportResponse newErrorResponse(int code) {
-        return new PassportResponse(code);
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
     }
 
     public String end() {
         return JSON.toJSONString(this);
     }
+
 }

@@ -1,8 +1,17 @@
 package com.h13.slg.passport.service;
 
+import com.h13.slg.config.PropertiesConfiguration;
+import com.h13.slg.core.exception.RequestFatalException;
+import com.h13.slg.core.exception.RequestUnexpectedException;
+import com.h13.slg.core.log.SlgLogger;
+import com.h13.slg.passport.cache.TokenCO;
+import com.h13.slg.passport.cache.TokenCache;
+import com.h13.slg.passport.core.PassportConstants;
+import com.h13.slg.passport.core.ResponseCode;
 import com.h13.slg.passport.dao.AccountDAO;
 import com.h13.slg.passport.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,13 +27,90 @@ public class AccountService {
     @Autowired
     AccountDAO accountDAO;
 
-    public int register(String name, String password) {
+    @Autowired
+    TokenCache tokenCache;
 
-        return accountDAO.insert(name, password);
+    /**
+     * 尝试注册
+     *
+     * @param name
+     * @param password
+     * @return
+     * @throws RequestUnexpectedException
+     * @throws RequestFatalException
+     */
+    public int register(String name, String password) throws RequestUnexpectedException, RequestFatalException {
+        // 检测是否name已经被注册过
+        boolean b = accountDAO.haveThisName(name);
+        if (b) {
+            throw new RequestUnexpectedException(ResponseCode.REGISTER_HAVE_THIS_NAME);
+        }
+        try {
+            return accountDAO.insert(name, password);
+        } catch (Exception e) {
+            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+                    String.format("name=%s,password=%s", name, password), e);
+        }
     }
 
 
-    public Account login(String name, String password) {
-        return accountDAO.findForLogin(name, password);
+    /**
+     * 尝试登录
+     *
+     * @param name
+     * @param password
+     * @return
+     * @throws RequestUnexpectedException
+     * @throws RequestFatalException
+     */
+    public Account login(String name, String password) throws
+            RequestUnexpectedException, RequestFatalException {
+        try {
+            return accountDAO.findForLogin(name, password);
+        } catch (DataAccessException e) {
+            throw new RequestUnexpectedException(ResponseCode.LOGIN_FAIL);
+        } catch (Exception e) {
+            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+                    String.format("name=%s,password=%s", name, password), e);
+        }
+    }
+
+
+    /**
+     * 获取token
+     *
+     * @return
+     */
+    public String generateToken(Account account) {
+        // generate token
+
+        String token = System.currentTimeMillis() + "";
+        TokenCO tokenCO = new TokenCO();
+        tokenCO.setToken(token);
+
+        tokenCache.set(tokenCO, PropertiesConfiguration.getInstance().getIntValue("token.timeout"));
+
+        return tokenCO.getToken();
+    }
+
+
+    /**
+     * 游戏服务器用来检测是否token合法
+     *
+     * @param token
+     * @return
+     */
+    public boolean checkToken(String token) throws RequestFatalException {
+        try {
+
+            TokenCO tokenCO = tokenCache.get(token);
+            if (tokenCO != null) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+                    String.format("token=%s", token), e);
+        }
     }
 }

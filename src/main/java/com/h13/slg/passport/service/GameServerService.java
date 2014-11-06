@@ -32,21 +32,21 @@ public class GameServerService {
     }
 
 
-    public String remoteLogin(GameServer gameServer) {
-
-        String serverUrl = generateUrl(gameServer);
-
-        HttpClientUtil http = new HttpClientUtil();
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("mod", "user");
-        map.put("act", "login");
-        map.put("auth_key", "fdsafdsa");
-        map.put("auth_time", "24321431");
-        map.put("args", "{name:'ssss',password:'bbbb'}");
-        map.put("seq", "1");
-        String s = http.post(serverUrl, map);
-
-    }
+//    public String remoteLogin(GameServer gameServer) {
+//
+//        String serverUrl = generateUrl(gameServer);
+//
+//        HttpClientUtil http = new HttpClientUtil();
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("mod", "user");
+//        map.put("act", "login");
+//        map.put("auth_key", "fdsafdsa");
+//        map.put("auth_time", "24321431");
+//        map.put("args", "{name:'ssss',password:'bbbb'}");
+//        map.put("seq4", "1");
+//        String s = http.post(serverUrl, map);
+//
+//    }
 
     private String generateUrl(GameServer gameServer) {
         return "http://" + gameServer.getIp() + ":" + gameServer.getPort() + "/slg/";

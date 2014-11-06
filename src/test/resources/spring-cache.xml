@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jedisConnectionFactory"
+          class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+          p:host-name="${redis.ip}" p:port="${redis.port}" p:use-pool="true"/>
+
+    <bean id="redisStringRedisSerializer"
+          class="com.h13.slg.core.util.FastJsonRedisSerializer">
+        <constructor-arg type="java.lang.Class" value="java.lang.String"/>
+    </bean>
+
+    <bean id="redisLongRedisSerializer"
+          class="com.h13.slg.core.util.FastJsonRedisSerializer">
+        <constructor-arg type="java.lang.Class" value="java.lang.Long"/>
+    </bean>
+
+
+    <!-- tokenTemplate -->
+    <bean id="tokenSerializer"
+          class="com.h13.slg.core.util.FastJsonRedisSerializer">
+        <constructor-arg type="java.lang.Class" value="com.h13.slg.passport.cache.TokenCO"/>
+    </bean>
+    <bean id="tokenTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+          p:connection-factory-ref="jedisConnectionFactory" p:keySerializer-ref="redisStringRedisSerializer"
+          p:valueSerializer-ref="tokenSerializer">
+    </bean>
+
+</beans>
