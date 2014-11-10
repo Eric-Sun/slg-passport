@@ -1,9 +1,7 @@
 package com.h13.slg.passport.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.h13.slg.passport.util.AccountUtil;
-import com.h13.slg.passport.core.PassportResponse;
-import com.h13.slg.passport.core.ResponseCode;
+import com.h13.slg.core.transmission.passport.PassportResponse;
 import com.h13.slg.passport.model.GameServer;
 import com.h13.slg.passport.service.GameServerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,7 @@ public class GameServerController {
     public String list(HttpServletRequest request) {
         List<GameServer> list = gameServerService.list();
         return PassportResponse.newSuccessResponse().addData("list",
-                JSON.toJSONString(list)).end();
+                list).end();
     }
 
 }

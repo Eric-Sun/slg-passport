@@ -1,10 +1,5 @@
 package com.h13.slg.passport.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.print.attribute.standard.DateTimeAtCompleted;
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,8 +13,26 @@ public class GameServer {
     private int id;
     private String name;
     private String ip;
-    private String port;
-    private Date opentime;
+    private int port;
+    private String opentime;
+    private int deleted;
+    private int status;
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
+    }
 
     public int getId() {
         return id;
@@ -45,19 +58,19 @@ public class GameServer {
         this.name = name;
     }
 
-    public Date getOpentime() {
-        return opentime;
-    }
-
-    public void setOpentime(Date opentime) {
-        this.opentime = opentime;
-    }
-
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
+    }
+
+    public String getOpentime() {
+        return opentime;
+    }
+
+    public void setOpentime(String opentime) {
+        this.opentime = opentime;
     }
 }

@@ -3,7 +3,7 @@ package com.h13.slg.passport;
 import com.alibaba.fastjson.JSON;
 import com.h13.slg.config.PropertiesConfiguration;
 import com.h13.slg.core.exception.RequestFatalException;
-import com.h13.slg.passport.core.PassportResponse;
+import com.h13.slg.core.transmission.passport.PassportResponse;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +20,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * @author Petri Kainulainen

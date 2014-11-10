@@ -1,15 +1,9 @@
 package com.h13.slg.passport.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.h13.slg.core.exception.RequestException;
-import com.h13.slg.core.exception.RequestFatalException;
-import com.h13.slg.core.exception.RequestUnexpectedException;
-import com.h13.slg.core.transmission.SlgData;
-import com.h13.slg.passport.core.PassportConstants;
-import com.h13.slg.passport.core.PassportResponse;
+import com.h13.slg.core.transmission.passport.PassportResponse;
 import com.h13.slg.passport.model.Account;
 import com.h13.slg.passport.service.AccountService;
-import org.apache.commons.httpclient.methods.RequestEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

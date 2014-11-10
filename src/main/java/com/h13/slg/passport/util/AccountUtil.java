@@ -1,8 +1,6 @@
 package com.h13.slg.passport.util;
 
 import com.h13.slg.passport.core.PassportConstants;
-import com.h13.slg.passport.core.PassportResponse;
-import com.h13.slg.passport.core.ResponseCode;
 
 import javax.servlet.http.HttpServletRequest;
 

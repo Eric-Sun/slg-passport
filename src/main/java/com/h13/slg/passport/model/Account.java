@@ -1,8 +1,5 @@
 package com.h13.slg.passport.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**

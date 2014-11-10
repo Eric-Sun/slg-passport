@@ -36,15 +36,17 @@ public class GameServerDAO {
 
     public int insert(final GameServer gs) {
         KeyHolder holder = new GeneratedKeyHolder();
-        final String sql = "insert into game_server (name,ip,port,opentime,createtime) values (?,?,?,?,now())";
+        final String sql = "insert into game_server (name,ip,port,opentime,createtime,deleted,status)" +
+                " values (?,?,?,?,now(),0,?)";
         j.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement pstmt = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 pstmt.setString(1, gs.getName());
                 pstmt.setString(2, gs.getIp());
-                pstmt.setString(3, gs.getPort());
-                pstmt.setDate(4, new Date(gs.getOpentime().getTime()));
+                pstmt.setInt(3, gs.getPort());
+                pstmt.setString(4, gs.getOpentime());
+                pstmt.setInt(5, gs.getStatus());
                 return pstmt;
             }
         }, holder);
@@ -54,8 +56,18 @@ public class GameServerDAO {
 
     public GameServer get(int gameServerId) {
         String sql = "select * from game_server where id=?";
-        return j.queryForObject(sql, new Object[]{gameServerId}, GameServer.class);
+        return j.queryForObject(sql, new Object[]{gameServerId}, new BeanPropertyRowMapper<GameServer>(GameServer.class));
     }
 
+
+    public void update(GameServer gs) {
+        String sql = "update game_server set name=?,ip=?,port=?,opentime=?,updatetime=now(),status=? where id=?";
+        j.update(sql, new Object[]{gs.getName(), gs.getIp(), gs.getPort(), gs.getOpentime(), gs.getId(), gs.getStatus()});
+    }
+
+    public void delete(int id) {
+        String sql = "update game_server set deleted=1 where id=?";
+        j.update(sql, new Object[]{id});
+    }
 
 }

@@ -31,26 +31,34 @@ public class GameServerService {
         return gameServerDAO.get(gameServerId);
     }
 
+    public GameServer create(String name, String ip, int port, String openTime, int status) {
+        GameServer gs = new GameServer();
+        gs.setIp(ip);
+        gs.setName(name);
+        gs.setPort(port);
+        gs.setOpentime(openTime);
+        gs.setStatus(status);
 
-//    public String remoteLogin(GameServer gameServer) {
-//
-//        String serverUrl = generateUrl(gameServer);
-//
-//        HttpClientUtil http = new HttpClientUtil();
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("mod", "user");
-//        map.put("act", "login");
-//        map.put("auth_key", "fdsafdsa");
-//        map.put("auth_time", "24321431");
-//        map.put("args", "{name:'ssss',password:'bbbb'}");
-//        map.put("seq4", "1");
-//        String s = http.post(serverUrl, map);
-//
-//    }
+        int id = gameServerDAO.insert(gs);
+        gs.setId(id);
 
-    private String generateUrl(GameServer gameServer) {
-        return "http://" + gameServer.getIp() + ":" + gameServer.getPort() + "/slg/";
+        return gs;
     }
 
+    public GameServer update(int id, String name, String ip, int port, String openTime, int status) {
+        GameServer gs = new GameServer();
+        gs.setIp(ip);
+        gs.setName(name);
+        gs.setPort(port);
+        gs.setOpentime(openTime);
+        gs.setId(id);
+        gs.setStatus(status);
 
+        gameServerDAO.update(gs);
+        return gs;
+    }
+
+    public void delete(int id) {
+        gameServerDAO.delete(id);
+    }
 }

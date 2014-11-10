@@ -3,11 +3,9 @@ package com.h13.slg.passport.service;
 import com.h13.slg.config.PropertiesConfiguration;
 import com.h13.slg.core.exception.RequestFatalException;
 import com.h13.slg.core.exception.RequestUnexpectedException;
-import com.h13.slg.core.log.SlgLogger;
+import com.h13.slg.core.transmission.passport.PassportResponseCode;
 import com.h13.slg.passport.cache.TokenCO;
 import com.h13.slg.passport.cache.TokenCache;
-import com.h13.slg.passport.core.PassportConstants;
-import com.h13.slg.passport.core.ResponseCode;
 import com.h13.slg.passport.dao.AccountDAO;
 import com.h13.slg.passport.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +41,12 @@ public class AccountService {
         // 检测是否name已经被注册过
         boolean b = accountDAO.haveThisName(name);
         if (b) {
-            throw new RequestUnexpectedException(ResponseCode.REGISTER_HAVE_THIS_NAME);
+            throw new RequestUnexpectedException(PassportResponseCode.REGISTER_HAVE_THIS_NAME);
         }
         try {
             return accountDAO.insert(name, password);
         } catch (Exception e) {
-            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+            throw new RequestFatalException(PassportResponseCode.PROGRAM_ERROR,
                     String.format("name=%s,password=%s", name, password), e);
         }
     }
@@ -68,9 +66,9 @@ public class AccountService {
         try {
             return accountDAO.findForLogin(name, password);
         } catch (DataAccessException e) {
-            throw new RequestUnexpectedException(ResponseCode.LOGIN_FAIL);
+            throw new RequestUnexpectedException(PassportResponseCode.LOGIN_FAIL);
         } catch (Exception e) {
-            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+            throw new RequestFatalException(PassportResponseCode.PROGRAM_ERROR,
                     String.format("name=%s,password=%s", name, password), e);
         }
     }
@@ -109,7 +107,7 @@ public class AccountService {
             }
             return false;
         } catch (Exception e) {
-            throw new RequestFatalException(ResponseCode.PROGRAM_ERROR,
+            throw new RequestFatalException(PassportResponseCode.PROGRAM_ERROR,
                     String.format("token=%s", token), e);
         }
     }
