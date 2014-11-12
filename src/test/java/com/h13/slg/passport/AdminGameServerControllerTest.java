@@ -65,8 +65,7 @@ public class AdminGameServerControllerTest {
 
     @Test
     public void index() throws Exception {
-        MvcResult result = mockMvc.perform(post("/admin/gameserver/")
-                        .param("id", "4")
+        MvcResult result = mockMvc.perform(post("/admin/gameserver/4")
         ).andReturn();
         PassportResponse r = JSON.parseObject(result.getResponse().getContentAsString(), PassportResponse.class);
         System.out.println(r.end());

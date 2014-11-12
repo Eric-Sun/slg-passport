@@ -1,9 +1,10 @@
 package com.h13.slg.passport.service;
 
 import com.h13.slg.passport.dao.GameServerDAO;
-import com.h13.slg.passport.model.GameServer;
+import com.h13.slg.core.transmission.passport.model.GameServer;
 import com.h13.slg.passport.util.HttpClientUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -28,7 +29,11 @@ public class GameServerService {
     }
 
     public GameServer get(int gameServerId) {
-        return gameServerDAO.get(gameServerId);
+        try {
+            return gameServerDAO.get(gameServerId);
+        } catch (DataAccessException e) {
+            return null;
+        }
     }
 
     public GameServer create(String name, String ip, int port, String openTime, int status) {
